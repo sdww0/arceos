@@ -1,0 +1,11 @@
+{
+    "rust-analyzer.cargo.target": "x86_64-unknown-none",
+    "rust-analyzer.cargo.cfgs": {
+        "platform_family": "x86-pc"
+    },
+    "rust-analyzer.cargo.features":"all",
+    "rust-analyzer.linkedProjects": [
+        "./Cargo.toml"
+    ],
+    "rust-analyzer.showUnlinkedFileNotification": false
+}
