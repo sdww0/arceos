@@ -191,6 +191,22 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
 
     unsafe { main() };
 
+
+
+    let mut ps2 = axhal::ps2_key::ps2_key::Ps2::new();
+
+    ps2.init().unwrap();
+    
+    loop{
+        if let Some((boo,val)) = ps2.next(){
+            ax_println!("bool:{:?}, val:{:?}",boo,val);
+        }
+
+    }
+
+    loop{}
+
+
     #[cfg(feature = "multitask")]
     axtask::exit(0);
     #[cfg(not(feature = "multitask"))]

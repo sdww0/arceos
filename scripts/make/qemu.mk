@@ -55,12 +55,16 @@ ifeq ($(NET_DUMP), y)
 endif
 
 qemu_args-$(GRAPHIC) += \
-  -device virtio-gpu-$(vdev-suffix) -vga none \
-  -serial mon:stdio
+  -serial mon:stdio 
+    # -device virtio-gpu-$(vdev-suffix) -vga none \
+
 
 ifeq ($(GRAPHIC), n)
-  qemu_args-y += -nographic
+#  qemu_args-y += -nographic
+  qemu_args-y += -serial mon:stdio
 endif
+
+# qemu_args-y += -device i8042
 
 ifeq ($(QEMU_LOG), y)
   qemu_args-y += -D qemu.log -d in_asm,int,mmu,pcall,cpu_reset,guest_errors
@@ -77,6 +81,7 @@ endif
 
 define run_qemu
   @printf "    $(CYAN_C)Running$(END_C) on qemu...\n"
+  @printf "    $(qemu_args-y)\n"
   $(call run_cmd,$(QEMU),$(qemu_args-y))
 endef
 

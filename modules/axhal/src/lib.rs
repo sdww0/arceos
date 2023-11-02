@@ -75,6 +75,10 @@ pub mod mp {
     pub use super::platform::mp::*;
 }
 
+pub mod ps2_key{
+    pub use super::platform::ps2_key;
+}
+
 pub use self::platform::platform_init;
 
 #[cfg(feature = "smp")]
