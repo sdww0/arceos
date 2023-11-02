@@ -1,0 +1,1 @@
+make LOG=debug PLATFORM=x86_64-qemu-q35 GRAPHIC=y run

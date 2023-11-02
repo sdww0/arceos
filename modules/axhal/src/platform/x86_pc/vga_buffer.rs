@@ -1,5 +1,7 @@
 //! VGA text mode.
 
+use core::fmt::{Arguments, Write};
+
 use lazy_init::LazyInit;
 use spinlock::SpinNoIrq;
 
@@ -279,4 +281,51 @@ pub(super) fn init() {
                 .init_by(&mut *(phys_to_virt(VGA_BASE_ADDR).as_usize() as *mut VgaTextBuffer));
         }
     }
+}
+
+pub fn color_test(){
+    pdev(format_args!("Hello World!"));
+    pinfo(format_args!("Hello World!"));
+    pdebug(format_args!("Hello World!"));
+}
+
+pub struct VgaOut;
+
+impl Write for VgaOut {
+    fn write_str(&mut self, s: &str) -> core::fmt::Result {
+        let mut vga = VGA.lock();
+        for c in s.bytes() {
+            if matches!(vga.process_char(c), VgaTextState::PutChar) {
+                vga.putchar(c);
+            }
+        }
+        Ok(())
+    }
+}
+
+#[inline(always)]
+pub fn pinfo(fmt: Arguments) {
+    if log::max_level() < log::LevelFilter::Info {
+        return;
+    }
+    VGA.lock().current_color = VgaTextColorCode::new(VgaTextColor::Blue, VgaTextColor::Black);
+    VgaOut.write_fmt(fmt);
+}
+
+#[inline(always)]
+pub fn pdev(fmt: Arguments) {
+    if log::max_level() < log::LevelFilter::Warn {
+        return;
+    }
+    VGA.lock().current_color = VgaTextColorCode::new(VgaTextColor::Green, VgaTextColor::Black);
+    VgaOut.write_fmt(fmt);
+}
+
+#[inline(always)]
+pub fn pdebug(fmt: Arguments) {
+    if log::max_level() < log::LevelFilter::Debug {
+        return;
+    }
+    VGA.lock().current_color = VgaTextColorCode::new(VgaTextColor::Red, VgaTextColor::Black);
+    VgaOut.write_fmt(fmt);
 }
