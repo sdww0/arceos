@@ -329,3 +329,9 @@ pub fn pdebug(fmt: Arguments) {
     VGA.lock().current_color = VgaTextColorCode::new(VgaTextColor::Red, VgaTextColor::Black);
     VgaOut.write_fmt(fmt);
 }
+
+
+#[inline(always)]
+pub fn reset_color(){
+    VGA.lock().current_color = VgaTextColorCode::new(VgaTextColor::White, VgaTextColor::Black);
+}

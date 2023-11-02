@@ -29,7 +29,7 @@ mod trap;
 #[cfg(feature = "smp")]
 mod mp;
 
-use axhal::console;
+use axhal::{console, ps2_key::ps2_test};
 
 #[cfg(feature = "smp")]
 pub use self::mp::rust_main_secondary;
@@ -193,6 +193,7 @@ pub extern "C" fn rust_main(cpu_id: usize, dtb: usize) -> ! {
     unsafe { main() };
 
     console::color_test();
+    ps2_test();
 
     loop {}
 

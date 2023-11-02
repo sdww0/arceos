@@ -3,6 +3,7 @@ mod boot;
 mod dtables;
 //mod uart16550;
 mod vga_buffer;
+pub mod ps2_key;
 
 pub mod mem;
 pub mod misc;

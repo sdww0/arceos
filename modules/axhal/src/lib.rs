@@ -65,6 +65,11 @@ pub mod console {
     }
 }
 
+#[cfg(all(target_arch = "x86_64", platform_family = "x86-pc"))]
+pub mod ps2_key{
+    pub use super::platform::ps2_key::*;
+}
+
 /// Miscellaneous operation, e.g. terminate the system.
 pub mod misc {
     pub use super::platform::misc::*;
